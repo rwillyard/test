@@ -133,20 +133,20 @@
 	<h1>Playlist Scrobble Filter</h1>
 
 	{#if !token}
-		<section class="auth">
+		<section>
 			<p>Connect your Spotify account to get started.</p>
 			<button onclick={login}>Login with Spotify</button>
 		</section>
 	{:else}
-		<section class="user-info">
+		<section>
 			<span>Logged in as <strong>{userDisplayName}</strong></span>
-			<button onclick={logout} class="small">Logout</button>
+			<button onclick={logout}>Logout</button>
 		</section>
 
 		<!-- Step 1: Load playlist -->
 		<section>
 			<h2>1. Load a Playlist</h2>
-			<div class="input-row">
+			<div>
 				<input
 					type="text"
 					bind:value={playlistInput}
@@ -162,7 +162,7 @@
 		{#if trackList.length > 0}
 			<section>
 				<h2>2. Fetch Scrobble Counts</h2>
-				<div class="input-row">
+				<div>
 					<input
 						type="text"
 						bind:value={lastfmUsername}
@@ -184,14 +184,14 @@
 		{#if hasScrobbles()}
 			<section>
 				<h2>3. Filter & Create Playlist</h2>
-				<div class="input-row">
+				<div>
 					<label>
 						Min scrobbles:
-						<input type="number" bind:value={minScrobbles} min="0" style="width: 80px" />
+						<input type="number" bind:value={minScrobbles} min="0" />
 					</label>
-					<span class="count">{filteredTracks().length} of {trackList.length} tracks</span>
+					<span>{filteredTracks().length} of {trackList.length} tracks</span>
 				</div>
-				<div class="input-row">
+				<div>
 					<input
 						type="text"
 						bind:value={newPlaylistName}
@@ -219,12 +219,11 @@
 					</thead>
 					<tbody>
 						{#each trackList as track, i}
-							{@const included = track.scrobbles !== null && track.scrobbles >= minScrobbles}
-							<tr class:excluded={track.scrobbles !== null && !included}>
+							<tr>
 								<td>{i + 1}</td>
 								<td>{track.name}</td>
 								<td>{track.artists.map((a) => a.name).join(', ')}</td>
-								<td class="scrobble-count">
+								<td>
 									{track.scrobbles !== null ? track.scrobbles : '—'}
 								</td>
 							</tr>
@@ -235,142 +234,10 @@
 		{/if}
 
 		{#if statusMessage}
-			<p class="status">{statusMessage}</p>
+			<p>{statusMessage}</p>
 		{/if}
 		{#if errorMessage}
-			<p class="error">{errorMessage}</p>
+			<p>{errorMessage}</p>
 		{/if}
 	{/if}
 </main>
-
-<style>
-	:global(body) {
-		margin: 0;
-		background: #121212;
-		color: #e0e0e0;
-		font-family: system-ui, -apple-system, sans-serif;
-	}
-
-	main {
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 2rem 1rem;
-	}
-
-	h1 {
-		color: #1db954;
-		margin-bottom: 1.5rem;
-	}
-
-	h2 {
-		font-size: 1.1rem;
-		color: #b3b3b3;
-		margin-bottom: 0.5rem;
-	}
-
-	section {
-		margin-bottom: 1.5rem;
-	}
-
-	.auth {
-		text-align: center;
-		margin-top: 3rem;
-	}
-
-	.user-info {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-		margin-bottom: 1.5rem;
-	}
-
-	.input-row {
-		display: flex;
-		gap: 0.5rem;
-		align-items: center;
-		margin-bottom: 0.5rem;
-	}
-
-	input[type='text'],
-	input[type='number'] {
-		background: #282828;
-		border: 1px solid #444;
-		color: #e0e0e0;
-		padding: 0.5rem 0.75rem;
-		border-radius: 4px;
-		font-size: 0.9rem;
-	}
-
-	input[type='text'] {
-		flex: 1;
-	}
-
-	button {
-		background: #1db954;
-		color: #000;
-		border: none;
-		padding: 0.5rem 1.25rem;
-		border-radius: 4px;
-		font-weight: 600;
-		cursor: pointer;
-		font-size: 0.9rem;
-	}
-
-	button:hover:not(:disabled) {
-		background: #1ed760;
-	}
-
-	button:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	button.small {
-		background: transparent;
-		color: #b3b3b3;
-		border: 1px solid #444;
-		padding: 0.25rem 0.75rem;
-		font-size: 0.8rem;
-	}
-
-	.count {
-		color: #b3b3b3;
-		font-size: 0.9rem;
-	}
-
-	table {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: 0.9rem;
-	}
-
-	th {
-		text-align: left;
-		padding: 0.5rem;
-		border-bottom: 1px solid #333;
-		color: #b3b3b3;
-		font-weight: normal;
-	}
-
-	td {
-		padding: 0.4rem 0.5rem;
-		border-bottom: 1px solid #1e1e1e;
-	}
-
-	tr.excluded {
-		opacity: 0.35;
-	}
-
-	.scrobble-count {
-		text-align: right;
-		font-variant-numeric: tabular-nums;
-	}
-
-	.status {
-		color: #1db954;
-	}
-
-	.error {
-		color: #e33;
-	}
-</style>

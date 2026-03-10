@@ -37,25 +37,11 @@
 	});
 </script>
 
-<div class="callback">
+<div>
 	{#if error}
-		<p class="error">{error}</p>
+		<p>{error}</p>
 		<a href="/">Back to home</a>
 	{:else}
 		<p>Logging in...</p>
 	{/if}
 </div>
-
-<style>
-	.callback {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		min-height: 100vh;
-		font-family: system-ui, sans-serif;
-	}
-	.error {
-		color: #e33;
-	}
-</style>
